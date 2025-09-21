@@ -306,7 +306,7 @@ if __name__ == "__main__":
             
             # Generate a response
             response = vllm_client.reason(
-                model="llama-2-7b-chat-hf",
+                model="llama8b",
                 prompt="你好，介绍一下你自己。",
                 temperature=0.7
             )
