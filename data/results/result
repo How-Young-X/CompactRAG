@@ -1,0 +1,26 @@
+iter-2 musique
+
+model: llama8b
+total: 250
+success: 249
+fail: 1
+right: 75
+acc: 30.12%
+*******llama8b****2wiki***iter-gen2**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 127
+    acc: 50.8
+    
+*******llama8b****hotpotqa***iter-gen2**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 129
+    acc: 51.6
+    
