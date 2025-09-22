@@ -24,3 +24,12 @@ acc: 30.12%
     right: 129
     acc: 51.6
     
+*******llama8b****musique***iter-gen5**********
+
+    model: llama8b
+    total: 250
+    success: 246
+    fail: 4
+    right: 74
+    acc: 30.081300813008134
+    
