@@ -7,6 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from core.method.IterGen import get_itergen_test
+from core.method.QARag import get_qa_test
 
 if __name__ == "__main__":
     
@@ -59,6 +60,16 @@ if __name__ == "__main__":
             model=model,
             backend=backend,
             iter_=args.itergen
+        )
+        print(f"Final accuracy: {final_accuracy:.2f}%")
+    elif method == "qa":
+        final_accuracy = get_qa_test(
+            input_path=input_path,
+            output_path=output_path,
+            benchmark=benchmark,
+            model=model,
+            backend=backend,
+            topk=args.topk
         )
         print(f"Final accuracy: {final_accuracy:.2f}%")
     else:
