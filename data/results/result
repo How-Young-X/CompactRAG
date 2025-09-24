@@ -125,3 +125,22 @@ acc: 30.12%
 
 *******gemma2b****2wiki**selfask***********
 done! acc=22.08%
+
+*******gemma4b****2wiki***selfask**********
+
+    model: gemma4b
+    total: 250
+    success: 0
+    fail: 250
+    right: 0
+    acc: 0
+    
+*******gemma4b****2wiki***selfask**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 80
+    acc: 32.0
+    
