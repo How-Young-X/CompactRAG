@@ -78,3 +78,39 @@ acc: 30.12%
     right: 48
     acc: 19.2
     
+*******gemma4b****2wiki**corpusfrom:gpt-4*QA**top5********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 105
+    acc: 42.0
+    
+*******gemma4b****2wiki***iter-gen2**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 113
+    acc: 45.2
+    
+*******gemma4b****2wiki***iter-gen5**********
+
+    model: gemma4b
+    total: 250
+    success: 248
+    fail: 2
+    right: 112
+    acc: 45.16129032258064
+    
+*******gemma2b****2wiki***iter-gen5**********
+
+    model: gemma2b
+    total: 250
+    success: 250
+    fail: 0
+    right: 93
+    acc: 37.2
+    

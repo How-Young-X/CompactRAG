@@ -71,7 +71,7 @@ def get_itergen_test(input_path, output_path, benchmark, model,backend, iter_=2)
                 passage_list = normalize_knowledge_list(passage_list)
                 passages = "\n\n".join(passage_list)
                 input_ = prompt_template.format(documents=passages, question = question)
-                for attempt in range(3):
+                for attempt in range(1):
                     try:
                         llm_response = reason(model=model, prompt_=input_,temperature=0)
                         pred_answer = extract_model_cot_answer(llm_response) if llm_response else ""
