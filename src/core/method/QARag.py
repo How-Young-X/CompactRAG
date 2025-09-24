@@ -102,7 +102,7 @@ def rewriter(input_text):
 
 
 
-def get_qa_test(input_path, output_path,benchmark, model,backend,topk=5):
+def get_qa_test(input_path, output_path,benchmark, model,corpusfrom,backend,topk=5):
     with jsonlines.open(input_path, "r") as f:
         lines = list(f)
     
@@ -114,9 +114,9 @@ def get_qa_test(input_path, output_path,benchmark, model,backend,topk=5):
     
     retriever = FaissRetriever()
     
-    retriever.load(f"data/index/QA/gpt-4/{benchmark}/corpus.index",
-                       f"data/index/QA/gpt-4/{benchmark}/corpus_meta.pkl",
-                       f"data/index/QA/gpt-4/{benchmark}/corpus_meta.db")
+    retriever.load(f"data/index/QA/{corpusfrom}/{benchmark}/corpus.index",
+                       f"data/index/QA/{corpusfrom}/{benchmark}/corpus_meta.pkl",
+                       f"data/index/QA/{corpusfrom}/{benchmark}/corpus_meta.db")
     pbar = tqdm(lines, desc="deal test", unit="question")
     with jsonlines.open(output_path, "w") as outfile:
         for i, line in enumerate(pbar):
@@ -152,7 +152,12 @@ def get_qa_test(input_path, output_path,benchmark, model,backend,topk=5):
                         sub_q = subqestion["q"]
                     except:
                         break
-                    if subqestion["ref"] == "None" or subqestion["ref"] == None:
+                    ref = None
+                    try:
+                        ref = subqestion["ref"] 
+                    except:
+                        ref = None
+                    if ref == "None" or ref == None:
                         results = retriever.search(sub_q, topk=topk)
                         recall["subquestion"] = sub_q
                         recall["retrieved"] = results
@@ -170,7 +175,11 @@ def get_qa_test(input_path, output_path,benchmark, model,backend,topk=5):
                             ref_id = int(subqestion["ref"])
                         except:
                             ref_id = max(sub_index - 1, 0)
-                        ref_answer = subqestions[ref_id]["answer"]
+                        ref_answer=""
+                        try:
+                            ref_answer = subqestions[ref_id]["answer"]
+                        except:
+                            pass
                         rewriter_input_template = "Q: {question} | prev_answer: {prev_answer}"
                         rewriter_input = rewriter_input_template.format(question=sub_q,prev_answer=ref_answer)
                         sub_qestion_rewrited = rewriter(rewriter_input)
@@ -248,7 +257,7 @@ def get_qa_test(input_path, output_path,benchmark, model,backend,topk=5):
     acc: {final_acc}
     """
     with open("data/results/result","a",encoding="utf8") as f:
-        f.write(f"\n*******{model}****{benchmark}***QA**top{topk}********\n")
+        f.write(f"\n*******{model}****{benchmark}**corpusfrom:{corpusfrom}*QA**top{topk}********\n")
         f.write(r)
     
     return final_acc

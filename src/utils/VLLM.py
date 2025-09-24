@@ -8,7 +8,7 @@ import time
 from typing import Optional
 
 
-def reason(model: str, prompt_: str, temperature: float = 0.7, max_tokens: Optional[int] = None) -> str:
+def reason(model: str, prompt_: str, temperature: float = 0, max_tokens: Optional[int] = None) -> str:
     """
     Call vLLM API to generate response
     
@@ -40,7 +40,7 @@ def reason(model: str, prompt_: str, temperature: float = 0.7, max_tokens: Optio
         data["max_tokens"] = max_tokens
     
     try:
-        response = requests.post(url, headers=headers, json=data, timeout=30)
+        response = requests.post(url, headers=headers, json=data, timeout=100)
         response.raise_for_status()
         
         result = response.json()
