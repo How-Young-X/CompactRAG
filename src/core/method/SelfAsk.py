@@ -224,7 +224,7 @@ def get_selfask_test(
     right: {correct}
     acc: {final_acc}
     """
-    with open("results/250/result","a",encoding="utf8") as f:
+    with open("data/results/result","a",encoding="utf8") as f:
         f.write(f"\n*******{model}****{benchmark}***selfask**********\n")
         f.write(r)
     

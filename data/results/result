@@ -114,3 +114,14 @@ acc: 30.12%
     right: 93
     acc: 37.2
     
+*******gemma2b****2wiki**corpusfrom:gpt-4*QA**top5********
+
+    model: gemma2b
+    total: 250
+    success: 250
+    fail: 0
+    right: 79
+    acc: 31.6
+
+*******gemma2b****2wiki**selfask***********
+done! acc=22.08%

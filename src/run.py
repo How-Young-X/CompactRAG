@@ -8,6 +8,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from core.method.IterGen import get_itergen_test
 from core.method.QARag import get_qa_test
+from core.method.SelfAsk import get_selfask_test
 
 if __name__ == "__main__":
     
@@ -76,6 +77,15 @@ if __name__ == "__main__":
             topk=args.topk
         )
         print(f"Final accuracy: {final_accuracy:.2f}%")
+    elif method == "selfask":
+        final_accuracy = get_selfask_test(
+            input_path=input_path,
+            output_path=output_path,
+            benchmark=benchmark,
+            model=model,
+            backend=backend
+        )
+
     else:
         print(f"Error: Method '{method}' is not implemented yet. Only 'itergen' is currently supported.")
         print("Available methods: direct, cot, selfask, naive, itergen, qa")
