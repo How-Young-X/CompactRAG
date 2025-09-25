@@ -181,14 +181,6 @@ done! acc=22.08%
     right: 85
     acc: 34.0
     
-*******llama3b****hotpotqa**corpusfrom:qwen3-32b*QA**top5********
-
-    model: llama3b
-    total: 250
-    success: 250
-    fail: 0
-    right: 93
-    acc: 37.2
     
 ***ablation****llama3b****2wiki**corpusfrom:gpt-4*QA**top5********
 
@@ -207,4 +199,85 @@ done! acc=22.08%
     fail: 0
     right: 78
     acc: 31.2
+    
+*******llama3b****hotpotqa**corpusfrom:qwen3-32b*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 82
+    acc: 32.800000000000004
+    
+*******llama3b****hotpotqa**corpusfrom:llama8b*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 81
+    acc: 32.4
+    
+*******llama3b****musique**corpusfrom:qwen3-32b*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 41
+    acc: 16.400000000000002
+    
+*******llama3b****musique**corpusfrom:llama8b*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 35
+    acc: 14.000000000000002
+    
+*******llama3b****2wiki***selfask**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 28
+    acc: 11.200000000000001
+    
+*******llama3b****hotpotqa***selfask**********
+
+    model: llama3b
+    total: 250
+    success: 247
+    fail: 3
+    right: 41
+    acc: 16.599190283400812
+    
+*******llama3b****musique***selfask**********
+
+    model: llama3b
+    total: 250
+    success: 248
+    fail: 2
+    right: 18
+    acc: 7.258064516129033
+    
+*******llama3b****2wiki***ircot**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 60
+    acc: 24.0
+    
+*******llama3b****hotpotqa***ircot**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 12
+    acc: 4.8
     

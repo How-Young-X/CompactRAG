@@ -26,20 +26,19 @@ def extract_model_direct_answer(output):
 
 def extract_model_cot_answer(output):
     try:
-
+        # 首先尝试直接解析整个输出
         data = json.loads(output)
         return data.get("answer")
     
     except json.JSONDecodeError:
         try:
-            json_match = re.search(r'\{.*?\}', output, re.DOTALL)
-            if json_match:
-                json_str = json_match.group()
-                data = json.loads(json_str)
+            # 使用现有的健壮JSON提取函数
+            data = extract_json_from_llm_response(output)
+            if data:
                 return data.get("answer")
             
+            # 最后尝试直接匹配answer字段
             answer_match = re.search(r'"answer":\s*"([^"]+)"', output)
-            
             if answer_match:
                 return answer_match.group(1)
             
@@ -49,20 +48,19 @@ def extract_model_cot_answer(output):
             return None
 def extract_model_cot_thought(output):
     try:
-
+        # 首先尝试直接解析整个输出
         data = json.loads(output)
         return data.get("thought")
     
     except json.JSONDecodeError:
         try:
-            json_match = re.search(r'\{.*?\}', output, re.DOTALL)
-            if json_match:
-                json_str = json_match.group()
-                data = json.loads(json_str)
+            # 使用现有的健壮JSON提取函数
+            data = extract_json_from_llm_response(output)
+            if data:
                 return data.get("thought")
             
+            # 最后尝试直接匹配thought字段
             thought_match = re.search(r'"thought":\s*"([^"]+)"', output)
-            
             if thought_match:
                 return thought_match.group(1)
             

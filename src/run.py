@@ -9,6 +9,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from core.method.IterGen import get_itergen_test
 from core.method.QARag import get_qa_test
 from core.method.SelfAsk import get_selfask_test
+from core.method.IRCoT import get_ircot_test
 from core.method.QARagAblation import get_qa_ablation_rewritor_test
 from core.method.QARagAblationOnlyDecompose import get_qa_ablation_extractor_rewritor_test
 
@@ -17,7 +18,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--benchmark", type=str, default="musique",choices=["musique","2wiki","hotpotqa"])
     parser.add_argument("--model", type=str, default="llama3b", help="Model name for vLLM")
-    parser.add_argument("--method",type=str, default="itergen",choices=["direct","cot","selfask","naive","itergen","qa","qa_ablation_rewritor","qa_ablation_extractor_rewritor"], help="RAG method to use")
+    parser.add_argument("--method",type=str, default="itergen",choices=["direct","cot","selfask","naive","itergen","qa","ircot","qa_ablation_rewritor","qa_ablation_extractor_rewritor"], help="RAG method to use")
     parser.add_argument("--itergen",type=int, default=2, help="Number of iterations for itergen method")
     parser.add_argument("--corpusfrom",type=str, default="gpt-4", help="QA Corpus from which model")
     parser.add_argument("--topk",type=int, default=5, help="Number of top-k passages for retrieval")
@@ -45,6 +46,8 @@ if __name__ == "__main__":
         output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_evaluation_results.jsonl"
     elif method == "qa_ablation_extractor_rewritor":
         output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_evaluation_results.jsonl"
+    elif method == "ircot":
+        output_path = f"data/results/{benchmark}_{model}_{method}_evaluation_results.jsonl"
     else:
         output_path = f"data/results/{benchmark}_{model}_{method}_evaluation_results.jsonl"
            
@@ -90,6 +93,14 @@ if __name__ == "__main__":
             model=model,
             backend=backend
         )
+    elif method == "ircot":
+        final_accuracy = get_ircot_test(
+            input_path=input_path,
+            output_path=output_path,
+            benchmark=benchmark,
+            model=model,
+            backend=backend
+        )
     elif method == "qa_ablation_rewritor":
         final_accuracy = get_qa_ablation_rewritor_test(
             input_path=input_path,
@@ -113,6 +124,6 @@ if __name__ == "__main__":
 
     else:
         print(f"Error: Method '{method}' is not implemented yet. Only 'itergen' is currently supported.")
-        print("Available methods: direct, cot, selfask, naive, itergen, qa")
+        print("Available methods: direct, cot, selfask, naive, itergen, qa, ircot")
         print("Please implement the missing methods or use 'itergen' method.")
         sys.exit(1)
