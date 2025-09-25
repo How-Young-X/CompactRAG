@@ -199,3 +199,12 @@ done! acc=22.08%
     right: 80
     acc: 32.0
     
+***ablation****llama3b****2wiki**corpusfrom:gpt-4*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 78
+    acc: 31.2
+    

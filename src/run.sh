@@ -2,7 +2,7 @@
 
 MODEL="llama3b"
 
-BENCHMARKS=("2wiki" "hotpotqa" "musique")
+BENCHMARKS=("hotpotqa" "musique")
 METHODS=("qa")
 ITERGENS=(2 4) 
 CORPUSFROM=("qwen3-32b" "llama8b")
