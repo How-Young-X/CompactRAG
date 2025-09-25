@@ -120,21 +120,44 @@ def get_qa_test(input_path, output_path,benchmark, model,corpusfrom,backend,topk
     pbar = tqdm(lines, desc="deal test", unit="question")
     with jsonlines.open(output_path, "w") as outfile:
         for i, line in enumerate(pbar):
+            # 开始计时
+            
             question = line["question"]
             gold_answer = line["answer"]
             reason = None
+            reason_with_stats = None
             if backend == "vllm":
-                from utils.VLLM import reason
+                from utils.VLLM import reason, reason_with_stats
                 reason = reason
+                reason_with_stats = reason_with_stats
             elif backend == "dashscope":
                 from utils.Qwen import reason
                 reason = reason
+            
+            # 统计信息
+            total_input_tokens = 0
+            total_output_tokens = 0
+            step_stats = []
            
             decompose_input = DECOMPOSE_QUESTION.format(question=question)
             decompose_response = None
+            sample_start_time = time.time()
             for attempt in range(3):
                 try:
-                    decompose_response = reason(model=model, prompt_=decompose_input,temperature=0)
+                    if backend == "vllm" and reason_with_stats:
+                        # 使用带统计信息的函数
+                        stats_result = reason_with_stats(model=model, prompt_=decompose_input, temperature=0)
+                        decompose_response = stats_result["response"]
+                        total_input_tokens += stats_result["input_tokens"]
+                        total_output_tokens += stats_result["output_tokens"]
+                        step_stats.append({
+                            "step": "decompose",
+                            "input_tokens": stats_result["input_tokens"],
+                            "output_tokens": stats_result["output_tokens"]
+                        })
+                    else:
+                        # 使用原始函数（兼容其他backend）
+                        decompose_response = reason(model=model, prompt_=decompose_input,temperature=0)
                     break
                 except Exception as e:
                     if attempt < 2:  
@@ -204,7 +227,20 @@ def get_qa_test(input_path, output_path,benchmark, model,corpusfrom,backend,topk
                 llm_response = None
                 for attempt in range(3):
                     try:
-                        llm_response = reason(model=model, prompt_=prompt_multi_question_sub_qestion_retrieved,temperature=0)
+                        if backend == "vllm" and reason_with_stats:
+                            # 使用带统计信息的函数
+                            stats_result = reason_with_stats(model=model, prompt_=prompt_multi_question_sub_qestion_retrieved, temperature=0)
+                            llm_response = stats_result["response"]
+                            total_input_tokens += stats_result["input_tokens"]
+                            total_output_tokens += stats_result["output_tokens"]
+                            step_stats.append({
+                                "step": "final_reasoning",
+                                "input_tokens": stats_result["input_tokens"],
+                                "output_tokens": stats_result["output_tokens"]
+                            })
+                        else:
+                            # 使用原始函数（兼容其他backend）
+                            llm_response = reason(model=model, prompt_=prompt_multi_question_sub_qestion_retrieved,temperature=0)
                         break 
                     except Exception as e:
                         if attempt < 2:  
@@ -212,6 +248,10 @@ def get_qa_test(input_path, output_path,benchmark, model,corpusfrom,backend,topk
                         else:
                             print(f"\nquestion {i+1} failed: {str(e)}")
                             failed_questions += 1
+                
+                # 结束计时
+                sample_end_time = time.time()
+                total_time_consumed = sample_end_time - sample_start_time
 
                 pred_answer = extract_model_cot_answer(llm_response) if llm_response else None
                 
@@ -232,6 +272,12 @@ def get_qa_test(input_path, output_path,benchmark, model,corpusfrom,backend,topk
                     "recalls":recalls,
                     "model_input": prompt_multi_question_sub_qestion_retrieved,
                     "model_response": llm_response,
+                    # 添加统计信息
+                    "total_input_tokens": total_input_tokens,
+                    "total_output_tokens": total_output_tokens,
+                    "total_tokens": total_input_tokens + total_output_tokens,
+                    "total_time_consumed": total_time_consumed,
+                    "step_stats": step_stats
                 }
                 outfile.write(result)
                 if not is_correct:

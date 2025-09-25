@@ -57,6 +57,71 @@ def reason(model: str, prompt_: str, temperature: float = 0, max_tokens: Optiona
         raise
 
 
+def reason_with_stats(model: str, prompt_: str, temperature: float = 0, max_tokens: Optional[int] = None) -> dict:
+    """
+    Call vLLM API to generate response with token statistics
+    
+    Args:
+        model: Model name (e.g., "llama8b")
+        prompt_: Input prompt
+        temperature: Sampling temperature
+        max_tokens: Maximum tokens to generate
+        
+    Returns:
+        Dictionary containing:
+        - response: Generated response text
+        - input_tokens: Number of input tokens
+        - output_tokens: Number of output tokens
+        - total_tokens: Total tokens used
+    """
+    url = "http://localhost:8000/v1/chat/completions"
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+    
+    data = {
+        "model": model,
+        "messages": [
+            {"role": "user", "content": prompt_}
+        ],
+        "temperature": temperature,
+        "stream": False
+    }
+    
+    if max_tokens is not None:
+        data["max_tokens"] = max_tokens
+    
+    try:
+        response = requests.post(url, headers=headers, json=data, timeout=100)
+        response.raise_for_status()
+        
+        result = response.json()
+        
+        # Extract token usage information
+        usage = result.get("usage", {})
+        input_tokens = usage.get("prompt_tokens", 0)
+        output_tokens = usage.get("completion_tokens", 0)
+        total_tokens = usage.get("total_tokens", input_tokens + output_tokens)
+        
+        return {
+            "response": result["choices"][0]["message"]["content"],
+            "input_tokens": input_tokens,
+            "output_tokens": output_tokens,
+            "total_tokens": total_tokens
+        }
+        
+    except requests.exceptions.RequestException as e:
+        print(f"vLLM API request failed: {e}")
+        raise
+    except (KeyError, IndexError) as e:
+        print(f"Failed to parse vLLM response: {e}")
+        raise
+    except Exception as e:
+        print(f"Unexpected error calling vLLM: {e}")
+        raise
+
+
 def health_check() -> bool:
     """
     Check if vLLM service is running

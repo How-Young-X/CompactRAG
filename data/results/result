@@ -126,18 +126,73 @@ acc: 30.12%
 *******gemma2b****2wiki**selfask***********
 done! acc=22.08%
 
+
 *******gemma4b****2wiki***selfask**********
 
     model: gemma4b
     total: 250
-    success: 0
-    fail: 250
-    right: 0
-    acc: 0
+    success: 250
+    fail: 0
+    right: 80
+    acc: 32.0
     
-*******gemma4b****2wiki***selfask**********
+*******llama3b****2wiki***iter-gen2**********
 
-    model: gemma4b
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 71
+    acc: 28.4
+    
+*******llama3b****2wiki**corpusfrom:gpt-4*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 99
+    acc: 39.6
+    
+*******llama3b****2wiki***iter-gen4**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 72
+    acc: 28.799999999999997
+    
+*******llama3b****2wiki**corpusfrom:qwen3-32b*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 91
+    acc: 36.4
+    
+*******llama3b****2wiki**corpusfrom:llama8b*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 85
+    acc: 34.0
+    
+*******llama3b****hotpotqa**corpusfrom:qwen3-32b*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 93
+    acc: 37.2
+    
+***ablation****llama3b****2wiki**corpusfrom:gpt-4*QA**top5********
+
+    model: llama3b
     total: 250
     success: 250
     fail: 0

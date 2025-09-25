@@ -9,13 +9,15 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 from core.method.IterGen import get_itergen_test
 from core.method.QARag import get_qa_test
 from core.method.SelfAsk import get_selfask_test
+from core.method.QARagAblation import get_qa_ablation_rewritor_test
+from core.method.QARagAblationOnlyDecompose import get_qa_ablation_extractor_rewritor_test
 
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser()
     parser.add_argument("--benchmark", type=str, default="musique",choices=["musique","2wiki","hotpotqa"])
     parser.add_argument("--model", type=str, default="llama3b", help="Model name for vLLM")
-    parser.add_argument("--method",type=str, default="itergen",choices=["direct","cot","selfask","naive","itergen","qa"], help="RAG method to use")
+    parser.add_argument("--method",type=str, default="itergen",choices=["direct","cot","selfask","naive","itergen","qa","qa_ablation_rewritor","qa_ablation_extractor_rewritor"], help="RAG method to use")
     parser.add_argument("--itergen",type=int, default=2, help="Number of iterations for itergen method")
     parser.add_argument("--corpusfrom",type=str, default="gpt-4", help="QA Corpus from which model")
     parser.add_argument("--topk",type=int, default=5, help="Number of top-k passages for retrieval")
@@ -38,11 +40,14 @@ if __name__ == "__main__":
     if method == "itergen":
         output_path = f"data/results/{benchmark}_{model}_{method}_iter{args.itergen}_evaluation_results.jsonl"
     elif method == "qa":
-        output_path = f"data/results/{benchmark}_{model}_{method}_top{args.topk}_evaluation_results.jsonl"
+        output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_evaluation_results.jsonl"
+    elif method == "qa_ablation_rewritor":
+        output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_evaluation_results.jsonl"
+    elif method == "qa_ablation_extractor_rewritor":
+        output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_evaluation_results.jsonl"
     else:
         output_path = f"data/results/{benchmark}_{model}_{method}_evaluation_results.jsonl"
-        if method == "qa":
-            output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_evaluation_results.jsonl"
+           
     # 确保输出目录存在
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     
@@ -84,6 +89,26 @@ if __name__ == "__main__":
             benchmark=benchmark,
             model=model,
             backend=backend
+        )
+    elif method == "qa_ablation_rewritor":
+        final_accuracy = get_qa_ablation_rewritor_test(
+            input_path=input_path,
+            output_path=output_path,
+            benchmark=benchmark,
+            model=model,
+            corpusfrom=corpusfrom,
+            backend=backend,
+            topk=args.topk
+        )
+    elif method == "qa_ablation_extractor_rewritor":
+        final_accuracy = get_qa_ablation_extractor_rewritor_test(
+            input_path=input_path,
+            output_path=output_path,
+            benchmark=benchmark,
+            model=model,
+            corpusfrom=corpusfrom,
+            backend=backend,
+            topk=args.topk
         )
 
     else:

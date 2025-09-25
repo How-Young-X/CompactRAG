@@ -265,7 +265,7 @@ if __name__ == "__main__":
     parser.add_argument("--batch_size", type=int, default=64,
                        help="Batch size for processing")
     parser.add_argument("--save_every", type=int, default=1000)
-    parser.add_argument("--model", type=str, default="llama8b",choices=["llama8b","gpt-4"])
+    parser.add_argument("--model", type=str, default="llama8b",choices=["llama8b","gpt-4","qwen3-32b"])
     args = parser.parse_args()
 
     dataset = args.dataset

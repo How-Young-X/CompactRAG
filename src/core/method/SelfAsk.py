@@ -8,6 +8,7 @@ import jsonlines
 from utils.JudgeAnswer import is_answer_correct
 from core.PassageIndexSearch import FaissRetriever
 import re
+import time
 
 
 def extract_question(text: str) -> str:
@@ -54,7 +55,7 @@ def get_selfask_test(
 
     # backend
     if backend == "vllm":
-        from utils.VLLM import reason
+        from utils.VLLM import reason, reason_with_stats
     elif backend == "dashscope":
         from utils.Qwen import reason
 
@@ -85,10 +86,14 @@ def get_selfask_test(
             last = last[:-1]
         return last
 
-    def _call_model(prompt):
-        return reason(model=model, prompt_=prompt, temperature=0) or ""
+    def _call_model(prompt, collect_stats=False):
+        if backend == "vllm" and reason_with_stats and collect_stats:
+            stats_result = reason_with_stats(model=model, prompt_=prompt, temperature=0)
+            return stats_result["response"] or "", stats_result
+        else:
+            return reason(model=model, prompt_=prompt, temperature=0) or "", None
 
-    def _retrieve_direct_answer(fu_question):
+    def _retrieve_direct_answer(fu_question, collect_stats=False):
         try:
             knowledge_list = retriever.search(fu_question, topk) or []
         except Exception as e:
@@ -109,9 +114,9 @@ def get_selfask_test(
         retrieve_prompt = template.format(
             knowledge=knowledge_block, question=fu_question
         )
-        retrieve_resp = _call_model(retrieve_prompt)
+        retrieve_resp, stats = _call_model(retrieve_prompt, collect_stats=collect_stats)
         mid_answer = _parse_json_answer(retrieve_resp) or "unknown"
-        return mid_answer, knowledge_list
+        return mid_answer, knowledge_list, stats
 
     with jsonlines.open(input_path, "r") as f:
         lines = list(f)
@@ -123,6 +128,8 @@ def get_selfask_test(
 
     with jsonlines.open(output_path, "w") as outfile:
         for i, line in enumerate(pbar):
+            # 开始计时
+            
             question, gold_answer = line["question"], line["answer"]
 
             # init prompt
@@ -138,10 +145,28 @@ def get_selfask_test(
 
             trace_parts, internal_questions, collected_knowledges = [], [], []
             final_answer = None
-
+            
+            # 统计信息
+            total_input_tokens = 0
+            total_output_tokens = 0
+            step_stats = []
+            sample_start_time = time.time()
             try:
                 for step in range(max_iter):
-                    resp = _call_model(cur_prompt).strip()
+                    resp, stats = _call_model(cur_prompt, collect_stats=True)
+                    resp = resp.strip()
+                    
+                    # 收集统计信息
+                    if stats:
+                        total_input_tokens += stats["input_tokens"]
+                        total_output_tokens += stats["output_tokens"]
+                        step_stats.append({
+                            "step": step + 1,
+                            "type": "main_reasoning",
+                            "input_tokens": stats["input_tokens"],
+                            "output_tokens": stats["output_tokens"]
+                        })
+                    
                     if step == 0:
                         resp = resp.strip().split("\n")[1]
                     else:
@@ -166,8 +191,19 @@ def get_selfask_test(
                         fu_q = extract_question(resp)
                         internal_questions.append(fu_q)
 
-                        mid_ans, knowledge_list = _retrieve_direct_answer(fu_q)
+                        mid_ans, knowledge_list, retrieve_stats = _retrieve_direct_answer(fu_q, collect_stats=True)
                         collected_knowledges.extend(knowledge_list)
+                        
+                        # 收集检索统计信息
+                        if retrieve_stats:
+                            total_input_tokens += retrieve_stats["input_tokens"]
+                            total_output_tokens += retrieve_stats["output_tokens"]
+                            step_stats.append({
+                                "step": step + 1,
+                                "type": "retrieval",
+                                "input_tokens": retrieve_stats["input_tokens"],
+                                "output_tokens": retrieve_stats["output_tokens"]
+                            })
 
                         cur_prompt += (
                             f"\n{resp}\nIntermediate answer: {mid_ans}."
@@ -183,9 +219,24 @@ def get_selfask_test(
                     if step == max_iter - 1 and final_answer is None:
                         cur_prompt += "\nSo the final answer is:"
                 if final_answer is None:
-                    last_resp = _call_model(cur_prompt)
+                    last_resp, last_stats = _call_model(cur_prompt, collect_stats=True)
                     trace_parts.append(last_resp)
                     final_answer = extract_answer(last_resp)
+                    
+                    # 收集最后一步的统计信息
+                    if last_stats:
+                        total_input_tokens += last_stats["input_tokens"]
+                        total_output_tokens += last_stats["output_tokens"]
+                        step_stats.append({
+                            "step": len(step_stats) + 1,
+                            "type": "final_answer",
+                            "input_tokens": last_stats["input_tokens"],
+                            "output_tokens": last_stats["output_tokens"]
+                        })
+                
+                # 结束计时
+                sample_end_time = time.time()
+                total_time_consumed = sample_end_time - sample_start_time
 
                 pred_answer = final_answer
 
@@ -211,6 +262,12 @@ def get_selfask_test(
                 "trace": "\n".join(trace_parts),
                 "internal_questions": internal_questions,
                 "knowledges": collected_knowledges,
+                # 添加统计信息
+                "total_input_tokens": total_input_tokens,
+                "total_output_tokens": total_output_tokens,
+                "total_tokens": total_input_tokens + total_output_tokens,
+                "total_time_consumed": total_time_consumed,
+                "step_stats": step_stats
             }
             outfile.write(result)
 

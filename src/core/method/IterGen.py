@@ -38,6 +38,8 @@ def get_itergen_test(input_path, output_path, benchmark, model,backend, iter_=2)
     pbar = tqdm(lines, desc="deal test", unit="question")
     with jsonlines.open(output_path, "w") as outfile:
         for i, line in enumerate(pbar):
+            # 开始计时
+            
             question = line["question"]
             gold_answer = line["answer"]
             # passage_list = retriever.search(question,topk=10)
@@ -52,28 +54,50 @@ def get_itergen_test(input_path, output_path, benchmark, model,backend, iter_=2)
                 prompt_template = ITER_RETGEN_WIKIMQA_PROMPT
             elif benchmark == "hotpotqa":
                 prompt_template = ITER_RETGEN_HOTPOTQA_PROMPT
-           
             
             llm_response = None
             reason = None
+            reason_with_stats = None
             if backend == "vllm":
-                from utils.VLLM import reason
+                from utils.VLLM import reason, reason_with_stats
                 reason = reason
+                reason_with_stats = reason_with_stats
             elif backend == "dashscope":
                 from utils.Qwen import reason
                 reason = reason
 
             response_str = ""
             model_iter = []
+            # 统计信息
+            total_input_tokens = 0
+            total_output_tokens = 0
+            iteration_stats = []
+            
+            sample_start_time = time.time()
+
             for call in range(iter_):
                 retrieve_content = question + response_str
-                passage_list = retriever.search(retrieve_content,topk=10)
+                passage_list = retriever.search(retrieve_content,topk=5)
                 passage_list = normalize_knowledge_list(passage_list)
                 passages = "\n\n".join(passage_list)
                 input_ = prompt_template.format(documents=passages, question = question)
                 for attempt in range(1):
                     try:
-                        llm_response = reason(model=model, prompt_=input_,temperature=0)
+                        if backend == "vllm" and reason_with_stats:
+                            # 使用带统计信息的函数
+                            stats_result = reason_with_stats(model=model, prompt_=input_, temperature=0)
+                            llm_response = stats_result["response"]
+                            total_input_tokens += stats_result["input_tokens"]
+                            total_output_tokens += stats_result["output_tokens"]
+                            iteration_stats.append({
+                                "iteration": call + 1,
+                                "input_tokens": stats_result["input_tokens"],
+                                "output_tokens": stats_result["output_tokens"]
+                            })
+                        else:
+                            # 使用原始函数（兼容其他backend）
+                            llm_response = reason(model=model, prompt_=input_,temperature=0)
+                        
                         pred_answer = extract_model_cot_answer(llm_response) if llm_response else ""
                         pred_thought = extract_model_cot_thought(llm_response) if llm_response else ""
                         response_str = str(pred_thought) + "So the answer is: " +str(pred_answer)
@@ -86,6 +110,10 @@ def get_itergen_test(input_path, output_path, benchmark, model,backend, iter_=2)
                         else:
                             print(f"\nquestion {i+1} failed: {str(e)}")
                             failed_questions += 1
+            
+            # 结束计时
+            sample_end_time = time.time()
+            total_time_consumed = sample_end_time - sample_start_time
             
             pred_answer = extract_model_cot_answer(llm_response) if llm_response else None
             
@@ -103,7 +131,13 @@ def get_itergen_test(input_path, output_path, benchmark, model,backend, iter_=2)
                 "is_correct": is_correct,
                 "model_iter": model_iter,
                 "model_input": input_,
-                "model_response": llm_response
+                "model_response": llm_response,
+                # 添加统计信息
+                "total_input_tokens": total_input_tokens,
+                "total_output_tokens": total_output_tokens,
+                "total_tokens": total_input_tokens + total_output_tokens,
+                "total_time_consumed": total_time_consumed,
+                "iteration_stats": iteration_stats
             }
             outfile.write(result)
     
