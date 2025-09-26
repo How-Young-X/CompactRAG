@@ -57,7 +57,7 @@ def para_to_text(title: str, para: str, max_num_words: int) -> str:
     return para
 
 
-def get_ircot_test(input_path, output_path, benchmark, model, backend, max_iter=5, retrieval_count=5):
+def get_ircot_test(input_path, output_path, benchmark, model, backend, max_iter=3, retrieval_count=5):
     """
     IRCoT推理测试函数 - 严格按照原始IRCOT实现
     
@@ -124,7 +124,6 @@ def get_ircot_test(input_path, output_path, benchmark, model, backend, max_iter=
     with jsonlines.open(output_path, "w") as outfile:
         for i, line in enumerate(pbar):
             # 开始计时
-            sample_start_time = time.time()
             
             question = line["question"]
             gold_answer = line["answer"]
@@ -136,6 +135,7 @@ def get_ircot_test(input_path, output_path, benchmark, model, backend, max_iter=
             total_input_tokens = 0
             total_output_tokens = 0
             step_stats = []
+            sample_start_time = time.time()
             
             try:
                 # IRCoT主循环：交替检索和推理

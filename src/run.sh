@@ -1,9 +1,9 @@
 #!/bin/bash
 
-MODEL="llama3b"
+MODEL="gemma4b"
 
-BENCHMARKS=( "2wiki"  "hotpotqa" "musique")
-METHODS=("ircot")
+BENCHMARKS=("2wiki" "hotpotqa" "musique")
+METHODS=("qa" "ircot" "itergen" "selfask")
 ITERGENS=(2 4) 
 CORPUSFROM=("qwen3-32b" "llama8b")
 

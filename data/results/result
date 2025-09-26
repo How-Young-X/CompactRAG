@@ -281,3 +281,255 @@ done! acc=22.08%
     right: 12
     acc: 4.8
     
+*******llama3b****hotpotqa***iter-gen2**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 116
+    acc: 46.400000000000006
+    
+*******llama3b****hotpotqa***iter-gen4**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 115
+    acc: 46.0
+    
+*******llama3b****musique***iter-gen2**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 57
+    acc: 22.8
+    
+*******llama3b****musique***iter-gen4**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 60
+    acc: 24.0
+    
+*******llama3b****hotpotqa***ircot**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 95
+    acc: 38.0
+    
+*******llama3b****musique***ircot**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 44
+    acc: 17.599999999999998
+    
+*******llama3b****2wiki***ircot**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 87
+    acc: 34.8
+    
+*******llama3b****2wiki***ircot**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 87
+    acc: 34.8
+    
+*******llama3b****hotpotqa***iter-gen2**********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 116
+    acc: 46.400000000000006
+    
+*******llama3b****2wiki**corpusfrom:qwen3-32b*QA**top5********
+
+    model: llama3b
+    total: 250
+    success: 250
+    fail: 0
+    right: 85
+    acc: 34.0
+    
+*******gemma4b****2wiki**corpusfrom:qwen3-32b*QA**top5********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 111
+    acc: 44.4
+    
+*******gemma4b****2wiki**corpusfrom:llama8b*QA**top5********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 82
+    acc: 32.800000000000004
+    
+*******gemma4b****2wiki***ircot**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 94
+    acc: 37.6
+    
+*******gemma4b****2wiki***iter-gen2**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 100
+    acc: 40.0
+    
+*******gemma4b****2wiki***iter-gen4**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 102
+    acc: 40.8
+    
+*******gemma4b****2wiki***selfask**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 80
+    acc: 32.0
+    
+*******gemma4b****hotpotqa**corpusfrom:qwen3-32b*QA**top5********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 99
+    acc: 39.6
+    
+*******gemma4b****hotpotqa**corpusfrom:llama8b*QA**top5********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 79
+    acc: 31.6
+    
+*******gemma4b****hotpotqa***ircot**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 109
+    acc: 43.6
+    
+*******gemma4b****hotpotqa***iter-gen2**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 110
+    acc: 44.0
+    
+*******gemma4b****hotpotqa***iter-gen4**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 120
+    acc: 48.0
+    
+*******gemma4b****hotpotqa***selfask**********
+
+    model: gemma4b
+    total: 250
+    success: 249
+    fail: 1
+    right: 59
+    acc: 23.694779116465863
+    
+*******gemma4b****musique**corpusfrom:qwen3-32b*QA**top5********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 48
+    acc: 19.2
+    
+*******gemma4b****musique**corpusfrom:llama8b*QA**top5********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 34
+    acc: 13.600000000000001
+    
+*******gemma4b****musique***ircot**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 46
+    acc: 18.4
+    
+*******gemma4b****musique***iter-gen2**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 53
+    acc: 21.2
+    
+*******gemma4b****musique***iter-gen4**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 56
+    acc: 22.400000000000002
+    
+*******gemma4b****musique***selfask**********
+
+    model: gemma4b
+    total: 250
+    success: 250
+    fail: 0
+    right: 5
+    acc: 2.0
+    
