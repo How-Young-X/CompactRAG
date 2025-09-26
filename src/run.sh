@@ -1,10 +1,10 @@
 #!/bin/bash
 
-MODEL="gemma4b"
+MODEL="llama8b"
 
 BENCHMARKS=("2wiki" "hotpotqa" "musique")
 METHODS=("qa" "ircot" "itergen" "selfask")
-ITERGENS=(2 4) 
+ITERGENS=(4) 
 CORPUSFROM=("qwen3-32b" "llama8b")
 
 for BENCH in "${BENCHMARKS[@]}"; do

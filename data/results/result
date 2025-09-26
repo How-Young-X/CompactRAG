@@ -533,3 +533,39 @@ done! acc=22.08%
     right: 5
     acc: 2.0
     
+*******llama8b****2wiki**corpusfrom:qwen3-32b*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 101
+    acc: 40.400000000000006
+    
+*******llama8b****2wiki**corpusfrom:llama8b*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 85
+    acc: 34.0
+    
+*******llama8b****2wiki***ircot**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 107
+    acc: 42.8
+    
+*******llama8b****2wiki***iter-gen4**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 127
+    acc: 50.8
+    
