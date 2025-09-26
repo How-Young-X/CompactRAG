@@ -569,3 +569,93 @@ done! acc=22.08%
     right: 127
     acc: 50.8
     
+*******llama8b****2wiki***selfask**********
+
+    model: llama8b
+    total: 250
+    success: 249
+    fail: 1
+    right: 69
+    acc: 27.710843373493976
+    
+*******llama8b****hotpotqa**corpusfrom:qwen3-32b*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 105
+    acc: 42.0
+    
+*******llama8b****hotpotqa**corpusfrom:llama8b*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 96
+    acc: 38.4
+    
+*******llama8b****hotpotqa***ircot**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 107
+    acc: 42.8
+    
+*******llama8b****hotpotqa***iter-gen4**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 125
+    acc: 50.0
+    
+*******llama8b****hotpotqa***selfask**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 19
+    acc: 7.6
+    
+*******llama8b****musique**corpusfrom:qwen3-32b*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 56
+    acc: 22.400000000000002
+    
+*******llama8b****musique**corpusfrom:llama8b*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 40
+    acc: 16.0
+    
+*******llama8b****musique***ircot**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 53
+    acc: 21.2
+    
+*******llama8b****musique***iter-gen4**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 71
+    acc: 28.4
+    
