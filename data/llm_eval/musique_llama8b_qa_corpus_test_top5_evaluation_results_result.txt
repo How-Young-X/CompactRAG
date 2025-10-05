@@ -1,0 +1,6 @@
+
+musique_llama8b_qa_corpus_test_top5********
+Total samples: 250
+Correct samples: 69
+Accuracy: 0.2760 (27.60%)
+Results saved to: data/llm_eval/musique_llama8b_qa_corpus_test_top5_evaluation_results.jsonl

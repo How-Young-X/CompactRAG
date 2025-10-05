@@ -1,0 +1,6 @@
+
+2wiki_llama8b_qa_corpus_test_top5********
+Total samples: 250
+Average F1 Score: 0.4962
+Average Exact Match: 0.4000 (40.00%)
+Results saved to: data/f1_eval/2wiki_llama8b_qa_corpus_test_top5_evaluation_results.jsonl

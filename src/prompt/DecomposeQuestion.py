@@ -56,9 +56,8 @@ Please strictly follow these rules:
 ## General Rules
 1. Only break down the question if it requires finding and connecting multiple distinct pieces of information.  
 2. Each sub-question must target exactly **one specific, essential piece of information**.  
-3. Avoid redundant or overlapping sub-questions.  
-4. Ensure that every entity, event, or concept in the original question is represented in at least one sub-question.  
-5. Each sub-question must be **directly answerable** and **standalone clear**.  
+3. Ensure that every entity, event, or concept in the original question is represented in at least one sub-question.  
+4. Each sub-question must be **directly answerable** and **standalone clear**.  
 
 ## Special Rules for Question Types
 - **Impact/Significance questions**:  
@@ -94,9 +93,7 @@ Input: "In what year was the author of *The Insider's Guide to the Colleges* est
 Output:  
 [
   {{"index":0, "q": "Who is the author of 'The Insider's Guide to the Colleges'?", "ref": "None"}},
-  {{"index":1, "q": "In what year was this author established?", "ref": "0"}},
-  .......
-  {{"index":4, "q": "......", "ref": "2"}},
+  {{"index":1, "q": "In what year was this author established?", "ref": "0"}}
 ]
 
 Now, the multi-hop question is:

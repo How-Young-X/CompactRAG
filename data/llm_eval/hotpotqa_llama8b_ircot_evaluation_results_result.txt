@@ -1,0 +1,6 @@
+
+hotpotqa_llama8b_ircot_corpus_None_topNone********
+Total samples: 250
+Correct samples: 163
+Accuracy: 0.6520 (65.20%)
+Results saved to: data/llm_eval/hotpotqa_llama8b_ircot_evaluation_results.jsonl

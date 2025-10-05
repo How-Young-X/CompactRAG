@@ -1,0 +1,6 @@
+
+hotpotqa_llama8b_itergen_iter4_corpus_None_topNone********
+Total samples: 250
+Correct samples: 191
+Accuracy: 0.7640 (76.40%)
+Results saved to: data/llm_eval/hotpotqa_llama8b_itergen_iter4_evaluation_results.jsonl

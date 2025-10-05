@@ -102,7 +102,7 @@ def rewriter(input_text):
 
 
 
-def get_qa_test(input_path, output_path,benchmark, model,corpusfrom,backend,topk=5):
+def get_qa_test(input_path, output_path,benchmark, model,corpusfrom,backend,topk=3):
     with jsonlines.open(input_path, "r") as f:
         lines = list(f)
     

@@ -659,3 +659,183 @@ done! acc=22.08%
     right: 71
     acc: 28.4
     
+*******llama8b****hotpotqa**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 104
+    acc: 41.6
+    
+*******llama8b****musique**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 40
+    acc: 16.0
+    
+*******llama8b****2wiki**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 90
+    acc: 36.0
+    
+*******llama8b****2wiki**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 88
+    acc: 35.199999999999996
+    
+*******llama8b****2wiki**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 95
+    acc: 38.0
+    
+*******llama8b****2wiki**corpusfrom:test*QA**top3********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 98
+    acc: 39.2
+    
+*******llama8b****2wiki**corpusfrom:test*QA**top3********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 92
+    acc: 36.8
+    
+*******llama8b****2wiki**corpusfrom:test*QA**top3********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 101
+    acc: 40.400000000000006
+    
+*******llama8b****2wiki**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 100
+    acc: 40.0
+    
+*******llama8b****hotpotqa**corpusfrom:test*QA**top3********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 95
+    acc: 38.0
+    
+*******llama8b****hotpotqa**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 103
+    acc: 41.199999999999996
+    
+*******llama8b****musique**corpusfrom:test*QA**top3********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 42
+    acc: 16.8
+    
+*******llama8b****musique**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 46
+    acc: 18.4
+    
+*******llama8b****musique***selfask**********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 1
+    acc: 0.4
+    
+***ablation****llama8b****musique**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 39
+    acc: 15.6
+    
+***ablation****llama8b****musique**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 249
+    fail: 1
+    right: 26
+    acc: 10.441767068273093
+    
+***ablation****llama8b****2wiki**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 90
+    acc: 36.0
+    
+***ablation****llama8b****2wiki**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 82
+    acc: 32.800000000000004
+    
+***ablation****llama8b****hotpotqa**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 229
+    fail: 21
+    right: 92
+    acc: 44.54148471615721
+    
+***ablation****llama8b****hotpotqa**corpusfrom:test*QA**top5********
+
+    model: llama8b
+    total: 250
+    success: 250
+    fail: 0
+    right: 89
+    acc: 35.6
+    

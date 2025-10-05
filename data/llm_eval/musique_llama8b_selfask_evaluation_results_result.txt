@@ -1,0 +1,6 @@
+
+musique_llama8b_selfask_corpus_None_topNone********
+Total samples: 49
+Correct samples: 5
+Accuracy: 0.1020 (10.20%)
+Results saved to: data/llm_eval/musique_llama8b_selfask_evaluation_results.jsonl

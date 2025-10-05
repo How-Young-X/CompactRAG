@@ -1,0 +1,6 @@
+
+2wiki_llama8b_ircot_corpus_test_top3********
+Total samples: 250
+Average F1 Score: 0.4899
+Average Exact Match: 0.4320 (43.20%)
+Results saved to: data/f1_eval/2wiki_llama8b_ircot_evaluation_results.jsonl

@@ -23,7 +23,7 @@ set -e  # Exit on any error
 
 # Default values
 BENCHMARKS=("hotpotqa" "2wiki" "musique")
-METHODS=("direct" "cot" "selfask" "naive" "itergen" "qa")
+METHODS=("qa")
 MODEL="llama8b"
 BACKEND="vllm"
 ITERATIONS=2

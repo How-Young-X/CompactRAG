@@ -1,0 +1,6 @@
+
+musique_llama8b_itergen_iter4_corpus_test_top5********
+Total samples: 250
+Average F1 Score: 0.3894
+Average Exact Match: 0.2880 (28.80%)
+Results saved to: data/f1_eval/musique_llama8b_itergen_iter4_evaluation_results.jsonl

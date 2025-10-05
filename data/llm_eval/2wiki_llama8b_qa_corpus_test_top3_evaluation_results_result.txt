@@ -1,0 +1,6 @@
+
+2wiki_llama8b_qa_corpus_test_top3********
+Total samples: 250
+Correct samples: 129
+Accuracy: 0.5160 (51.60%)
+Results saved to: data/llm_eval/2wiki_llama8b_qa_corpus_test_top3_evaluation_results.jsonl

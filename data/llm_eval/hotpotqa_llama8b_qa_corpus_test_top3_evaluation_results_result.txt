@@ -1,0 +1,6 @@
+
+hotpotqa_llama8b_qa_corpus_test_top3********
+Total samples: 250
+Correct samples: 144
+Accuracy: 0.5760 (57.60%)
+Results saved to: data/llm_eval/hotpotqa_llama8b_qa_corpus_test_top3_evaluation_results.jsonl

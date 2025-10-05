@@ -1,0 +1,6 @@
+
+2wiki_llama8b_itergen_iter4_corpus_test_top3********
+Total samples: 250
+Average F1 Score: 0.5973
+Average Exact Match: 0.5080 (50.80%)
+Results saved to: data/f1_eval/2wiki_llama8b_itergen_iter4_evaluation_results.jsonl

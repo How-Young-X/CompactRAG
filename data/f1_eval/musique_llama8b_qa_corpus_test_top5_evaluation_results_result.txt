@@ -1,0 +1,6 @@
+
+musique_llama8b_qa_corpus_test_top5********
+Total samples: 250
+Average F1 Score: 0.2575
+Average Exact Match: 0.1840 (18.40%)
+Results saved to: data/f1_eval/musique_llama8b_qa_corpus_test_top5_evaluation_results.jsonl

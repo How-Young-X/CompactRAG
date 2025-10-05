@@ -1,0 +1,6 @@
+
+hotpotqa_llama8b_selfask_corpus_None_topNone********
+Total samples: 250
+Correct samples: 82
+Accuracy: 0.3280 (32.80%)
+Results saved to: data/llm_eval/hotpotqa_llama8b_selfask_evaluation_results.jsonl

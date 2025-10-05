@@ -1,0 +1,6 @@
+
+musique_llama8b_selfask_corpus_test_top5********
+Total samples: 73
+Average F1 Score: 0.0334
+Average Exact Match: 0.0000 (0.00%)
+Results saved to: data/f1_eval/musique_llama8b_selfask_evaluation_results.jsonl

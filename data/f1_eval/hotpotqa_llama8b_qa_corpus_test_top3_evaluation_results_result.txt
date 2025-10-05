@@ -1,0 +1,6 @@
+
+hotpotqa_llama8b_qa_corpus_test_top3********
+Total samples: 250
+Average F1 Score: 0.5336
+Average Exact Match: 0.3960 (39.60%)
+Results saved to: data/f1_eval/hotpotqa_llama8b_qa_corpus_test_top3_evaluation_results.jsonl

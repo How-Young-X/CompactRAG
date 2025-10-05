@@ -1,0 +1,6 @@
+
+musique_llama8b_itergen_iter4_corpus_None_topNone********
+Total samples: 250
+Correct samples: 100
+Accuracy: 0.4000 (40.00%)
+Results saved to: data/llm_eval/musique_llama8b_itergen_iter4_evaluation_results.jsonl

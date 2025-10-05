@@ -1,5 +1,4 @@
 import argparse
-import yaml
 import sys
 import os
 
@@ -41,7 +40,7 @@ if __name__ == "__main__":
     if method == "itergen":
         output_path = f"data/results/{benchmark}_{model}_{method}_iter{args.itergen}_evaluation_results.jsonl"
     elif method == "qa":
-        output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_evaluation_results.jsonl"
+        output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_top{args.topk}_evaluation_results.jsonl"
     elif method == "qa_ablation_rewritor":
         output_path = f"data/results/{benchmark}_{model}_{method}_corpus_{corpusfrom}_evaluation_results.jsonl"
     elif method == "qa_ablation_extractor_rewritor":

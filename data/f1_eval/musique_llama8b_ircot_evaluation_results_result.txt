@@ -1,0 +1,6 @@
+
+musique_llama8b_ircot_corpus_test_top5********
+Total samples: 250
+Average F1 Score: 0.2908
+Average Exact Match: 0.2200 (22.00%)
+Results saved to: data/f1_eval/musique_llama8b_ircot_evaluation_results.jsonl

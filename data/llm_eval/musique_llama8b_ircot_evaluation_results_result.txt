@@ -1,0 +1,6 @@
+
+musique_llama8b_ircot_corpus_None_topNone********
+Total samples: 250
+Correct samples: 81
+Accuracy: 0.3240 (32.40%)
+Results saved to: data/llm_eval/musique_llama8b_ircot_evaluation_results.jsonl
