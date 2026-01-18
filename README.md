@@ -1,246 +1,215 @@
-<div align="center">
+# CompactRAG
 
-# 📚 ReadingCorpus
+**Reducing LLM Calls and Token Overhead in Multi-Hop Question Answering**
 
-**Advanced Reading Comprehension and Text Processing Framework**
+[![WWW 2026](https://img.shields.io/badge/WWW-2026-blue)](https://www2026.thewebconf.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Python 3.8+](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
 
-[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://python.org)
-[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org)
-[![Transformers](https://img.shields.io/badge/Transformers-4.56+-green.svg)](https://huggingface.co/transformers)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+This is the official implementation of the paper **"CompactRAG: Reducing LLM Calls and Token Overhead in Multi-Hop Question Answering"**, accepted at **The Web Conference 2026 (WWW 2026)**.
 
-*A comprehensive framework for reading comprehension, text analysis, and natural language understanding using state-of-the-art pre-trained models.*
+## Overview
 
-</div>
+<p align="center">
+  <img src="images/framework.png" alt="CompactRAG Framework" width="100%">
+</p>
 
----
+Retrieval-Augmented Generation (RAG) has become the standard approach for knowledge-intensive NLP tasks. However, multi-hop question answering (MHQA) remains challenging as it requires integrating evidence from multiple documents. Existing iterative RAG pipelines face three critical issues:
 
-## 🌟 Features
+1. **Efficiency degradation** as reasoning hops increase
+2. **Redundant information** in retrieved context
+3. **Entity drift** during multi-hop decomposition
 
-- **Multi-Model Support**: Integration with leading language models including Meta-Llama-3, RoBERTa, and FLAN-T5
-- **Advanced NLP Pipeline**: Complete text processing and analysis capabilities
-- **Scalable Architecture**: Designed for both research and production environments
-- **Comprehensive Evaluation**: Built-in metrics and evaluation tools for model performance assessment
+**CompactRAG** addresses these challenges through a novel two-call framework that separates corpus processing from online inference:
 
-## 🚀 Quick Start
+- **Offline Stage**: An LLM reads the corpus once and constructs an **atomic QA knowledge base** — concise, fact-level QA pairs that reduce redundancy and better align with question semantics.
 
-### Prerequisites
+- **Online Stage**: A complex query is decomposed into dependency-ordered sub-questions. Each sub-question is resolved using lightweight modules:
+  - **Answer Extractor** (RoBERTa-base): Extracts grounded entities from retrieved QA pairs
+  - **Sub-Question Rewriter** (FLAN-T5-small): Resolves entity references to prevent semantic drift
+
+The main LLM is invoked **only twice per query**: once for decomposition and once for final synthesis reasoning — making LLM usage **independent of hop depth**.
+
+## Key Contributions
+
+- **Scalability Analysis**: We analyze scalability issues in iterative RAG pipelines, showing how token consumption and LLM calls grow with reasoning depth.
+
+- **Two-Call Framework**: We introduce CompactRAG, a two-call RAG framework that uses an offline atomic QA knowledge base and lightweight online modules to enable efficient multi-hop inference.
+
+- **Comprehensive Evaluation**: We evaluate CompactRAG on HotpotQA, 2WikiMultiHopQA, and MuSiQue. Results show competitive accuracy and large reductions in inference token usage compared to strong iterative baselines.
+
+## Installation
+
+### Requirements
 
 - Python 3.8+
-- CUDA-compatible GPU (recommended)
-- Hugging Face account with access to gated models
+- CUDA 12.x (for GPU acceleration)
+- 24GB+ GPU memory (for vLLM inference)
 
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd ReadingCorpus
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Download pre-trained models**
-   ```bash
-   cd models
-   
-   # Download Meta-Llama-3-8B-Instruct (requires Hugging Face token)
-   huggingface-cli download --token hf_*** --resume-download meta-llama/Meta-Llama-3-8B-Instruct --local-dir meta-llama/Meta-Llama-3-8B-Instruct
-   
-   # Download RoBERTa base model
-   huggingface-cli download --resume-download FacebookAI/roberta-base --local-dir FacebookAI/roberta-base
-   
-   # Download FLAN-T5 small model
-   huggingface-cli download --resume-download google/flan-t5-small --local-dir google/flan-t5-small
-   ```
-4. 随机采样（按照原始开发集中问题的类型、难度比例进行采样）250个测试问题及其关联的语料，并且去重
-
-## 📁 Project Structure
-
-```
-ReadingCorpus/
-├── 📂 data/                    # Dataset storage and processing
-│   └── sampled/               # Sampled datasets for testing
-├── 📂 models/                 # Pre-trained model storage
-│   ├── meta-llama/           # Meta-Llama-3-8B-Instruct
-│   ├── FacebookAI/           # RoBERTa models
-│   └── google/               # FLAN-T5 models
-├── 📂 src/                    # Source code and implementations
-│   ├── 📂 service/           # LLM client service
-│   │   ├── llm_client.py     # Main LLM client
-│   │   ├── config.py         # Configuration management
-│   │   └── example_usage.py  # Usage examples
-│   ├── 📂 core/              # Core processing modules
-│   │   └── AskCorpus.py      # QA generation with vLLM
-│   └── 📂 utils/             # Utility functions
-├── 📄 start_vllm_server.sh   # vLLM server startup script
-├── 📄 run_qa_generation.py   # QA generation runner
-├── 📄 test_askcorpus_simple.py # AskCorpus test suite
-├── 📄 requirements.txt        # Python dependencies
-├── 📄 LICENSE                 # MIT License
-└── 📄 README.md              # This file
-```
-
-## 🤖 Supported Models
-
-| Model | Size | Purpose | Access |
-|-------|------|---------|--------|
-| **Meta-Llama-3-8B-Instruct** | 8B | Instruction following, reasoning | Gated |
-| **RoBERTa-base** | 125M | Text classification, NLI | Open |
-| **FLAN-T5-small** | 80M | Text generation, summarization | Open |
-
-## 🔧 Usage
-
-### LLM Client Service
-
-The project includes a comprehensive LLM client service that supports both OpenAI API and vLLM local deployments.
-
-#### Quick Start with vLLM
-
-1. **Start the vLLM server:**
-   ```bash
-   ./start_vllm_server.sh
-   ```
-
-2. **Basic usage (compatible with your original code):**
-   ```python
-   from src.service.llm_client import create_vllm_client
-   
-   # Create client
-   client = create_vllm_client()
-   
-   # Use the reason method (same as your original code)
-   response = client.reason("llama8b", "你好，介绍一下你自己。", 0.7)
-   print(response)
-   ```
-
-3. **Advanced usage with custom parameters:**
-   ```python
-   response = client.generate_response(
-       model="llama8b",
-       prompt="Explain machine learning in simple terms.",
-       system_message="You are a helpful AI tutor.",
-       temperature=0.5,
-       max_tokens=200
-   )
-   ```
-
-#### Testing the Service
+### Setup
 
 ```bash
-# Test basic functionality
-python test_askcorpus_simple.py
+# Clone the repository
+git clone https://github.com/your-username/CompactRAG.git
+cd CompactRAG
 
-# Run comprehensive demo
-python run_qa_generation.py
+# Create virtual environment (optional but recommended)
+python -m venv venv
+source venv/bin/activate
 
-# View detailed examples
-python src/service/example_usage.py
+# Install dependencies
+pip install -r requirements.txt
 ```
 
-### QA Generation with AskCorpus.py
+### Model Setup
 
-The project includes a specialized QA generation tool that processes corpus files and generates question-answer pairs using the vLLM llama8b model.
+Download the required models:
 
-#### Quick Start
+1. **LLM**: Meta-Llama-3-8B-Instruct (or your preferred model)
+2. **Answer Extractor**: RoBERTa-base
+3. **Question Rewriter**: FLAN-T5-small
 
-1. **Start the vLLM server:**
-   ```bash
-   ./start_vllm_server.sh
-   ```
-
-2. **Generate QA pairs for a specific dataset:**
-   ```bash
-   python src/core/AskCorpus.py --dataset musique --corpus musique_sample_corpus.jsonl --workers 4
-   ```
-
-3. **Generate QA pairs for all datasets:**
-   ```bash
-   python run_qa_generation.py
-   ```
-
-#### Data Organization
-
-- **Input**: Corpus files from `data/sampled/` directory
-- **Output**: QA pairs organized by dataset in `data/QA/` directory
-  ```
-  data/QA/
-  ├── musique/
-  │   ├── llama8b-musique-qa.jsonl
-  │   └── llama8b-musique-qa_failed.jsonl
-  ├── 2wiki/
-  │   ├── llama8b-2wiki-qa.jsonl
-  │   └── llama8b-2wiki-qa_failed.jsonl
-  └── hotpotqa/
-      ├── llama8b-hotpotqa-qa.jsonl
-      └── llama8b-hotpotqa-qa_failed.jsonl
-  ```
-
-### Traditional Model Usage
-
-#### Basic Text Processing
-```python
-from transformers import AutoTokenizer, AutoModel
-
-# Load a model
-tokenizer = AutoTokenizer.from_pretrained("models/facebook/roberta-base")
-model = AutoModel.from_pretrained("models/facebook/roberta-base")
-
-# Process text
-text = "Your text here"
-inputs = tokenizer(text, return_tensors="pt")
-outputs = model(**inputs)
+Update the model path in `start_vllm_server.sh`:
+```bash
+MODEL_PATH="/path/to/your/Meta-Llama-3-8B-Instruct/"
 ```
 
-#### Reading Comprehension
-```python
-# Example usage for reading comprehension tasks
-# (Implementation details in src/)
+## Usage
+
+### Step 1: Start the vLLM Server
+
+```bash
+bash start_vllm_server.sh
 ```
 
-## 📊 Performance
+This starts the vLLM OpenAI-compatible API server at `http://localhost:8000`.
 
-- **Model Accuracy**: State-of-the-art performance on benchmark datasets
-- **Processing Speed**: Optimized for both CPU and GPU inference
-- **Memory Efficiency**: Support for model quantization and optimization
+### Step 2: Run Evaluation
 
-## 🤝 Contributing
+#### Basic Usage
 
-We welcome contributions! Please see our contributing guidelines for details on:
+```bash
+# Run on a single benchmark with default settings
+python src/run.py --benchmark musique --method qa --model llama8b
 
-- Code style and standards
-- Testing requirements
-- Pull request process
-- Issue reporting
+# Run with specific parameters
+python src/run.py --benchmark hotpotqa --method qa --topk 5 --model llama8b
+```
 
-## 📄 License
+#### Using the Run Script
+
+```bash
+# Run all benchmarks with all methods
+./run.sh
+
+# Run specific benchmarks and methods
+./run.sh -b musique,2wiki -m qa --topk 5
+
+# Run with parallel jobs
+./run.sh -j 4 -b hotpotqa -m qa
+
+# Specify output and log directories
+./run.sh -o data/results -l logs
+```
+
+### Available Options
+
+| Option | Description | Default |
+|--------|-------------|---------|
+| `-b, --benchmarks` | Comma-separated list of benchmarks | `hotpotqa,2wiki,musique` |
+| `-m, --methods` | Comma-separated list of methods | `qa` |
+| `--model` | Model name for inference | `llama8b` |
+| `--topk` | Number of top-k QA pairs for retrieval | `5` |
+| `--iterations` | Number of iterations for itergen method | `2` |
+| `-j, --parallel-jobs` | Number of parallel jobs | `1` |
+| `-o, --output-dir` | Output directory | `data/results` |
+| `--log-dir` | Log directory | `logs` |
+
+### Supported Benchmarks
+
+- **HotpotQA**: Distractor setting with 10 Wikipedia paragraphs per question
+- **2WikiMultiHopQA**: Multi-hop reasoning across Wikipedia articles
+- **MuSiQue**: Answerable subset requiring multi-step reasoning
+
+### Supported Methods
+
+- `qa`: CompactRAG main method
+- `itergen`: Iterative generation baseline
+- `selfask`: Self-Ask baseline
+- `ircot`: IRCoT baseline
+
+## Training
+
+### Train Answer Extractor
+
+```bash
+python train/train_roberta_qa.py
+```
+
+### Train Question Rewriter
+
+```bash
+python train/train_question_rewrite.py
+```
+
+### Generate Training Data
+
+```bash
+# Synthesize QA pairs for knowledge base
+python train/SynthesisQA.py
+
+# Synthesize question rewrite pairs
+python train/SynthesisRewrite.py
+```
+
+## Project Structure
+
+```
+CompactRAG/
+├── src/
+│   ├── core/           # Core algorithms and methods
+│   ├── metrics/        # Evaluation metrics (EM, F1, LLM-Acc)
+│   ├── prompt/         # Prompt templates
+│   ├── service/        # API service utilities
+│   ├── utils/          # Helper functions
+│   └── run.py          # Main entry point
+├── train/              # Training scripts for lightweight modules
+├── data/
+│   ├── QA/             # Atomic QA knowledge base
+│   ├── sampled/        # Sampled test data
+│   └── results/        # Evaluation results
+├── images/             # Framework figures
+├── run.sh              # Batch evaluation script
+├── start_vllm_server.sh # vLLM server startup script
+└── requirements.txt    # Python dependencies
+```
+
+## Results
+
+CompactRAG achieves competitive accuracy while significantly reducing computational overhead:
+
+- **Only 2 LLM calls** per query (vs. 2n+1 for n-hop questions in iterative methods)
+- **Reduced token consumption** through atomic QA retrieval
+- **Consistent performance** across different hop depths
+
+## Citation
+
+If you find this work useful, please cite our paper:
+
+```bibtex
+@inproceedings{yang2026compactrag,
+  title={CompactRAG: Reducing LLM Calls and Token Overhead in Multi-Hop Question Answering},
+  author={Yang, Hao and Yang, Zhiyu and Zhang, Xupeng and Wei, Wei and Zhang, Yunjie and Yang, Lin},
+  booktitle={Proceedings of the ACM Web Conference 2026 (WWW '26)},
+  year={2026},
+  publisher={ACM},
+}
+```
+
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
-- [Hugging Face](https://huggingface.co/) for providing the Transformers library
-- [Meta AI](https://ai.meta.com/) for the Llama models
-- [Facebook AI](https://ai.facebook.com/) for RoBERTa
-- [Google Research](https://research.google/) for FLAN-T5
-
-## 📞 Support
-
-For questions, issues, or contributions, please:
-
-1. Check existing [Issues](../../issues)
-2. Create a new issue if needed
-3. Contact the maintainers
-
----
-
-<div align="center">
-
-**Made with ❤️ for the NLP community**
-
-[⭐ Star this repo](../../stargazers) • [🐛 Report Bug](../../issues) • [💡 Request Feature](../../issues)
-
-</div>
+We thank the authors of HotpotQA, 2WikiMultiHopQA, and MuSiQue for providing the benchmark datasets.
